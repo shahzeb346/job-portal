@@ -94,7 +94,7 @@ const Applicants = () => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="applicant-resume-title"
-            className="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="flex h-[94dvh] max-h-[1100px] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <header className="flex items-start justify-between gap-4 border-b border-slate-200 p-5">
@@ -109,10 +109,10 @@ const Applicants = () => {
               </button>
             </header>
 
-            <div className="grid min-h-0 flex-1 overflow-y-auto md:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="grid min-h-0 flex-1 overflow-y-auto md:overflow-hidden md:grid-cols-[minmax(0,1fr)_320px]">
               <div className="min-h-[55vh] bg-slate-100 p-3 md:min-h-0">
                 {selectedApplicant.resume?.url ? (
-                  <iframe title={`${selectedApplicant.applicant?.name || "Applicant"} resume`} src={selectedApplicant.resume.url} className="h-[65vh] w-full rounded-lg border border-slate-200 bg-white md:h-full" />
+                  <iframe title={`${selectedApplicant.applicant?.name || "Applicant"} resume`} src={selectedApplicant.resume.url} className="h-[52vh] min-h-0 w-full rounded-lg border border-slate-200 bg-white md:h-full" />
                 ) : (
                   <div className="flex h-full min-h-64 items-center justify-center text-sm text-slate-500">No resume was attached to this application.</div>
                 )}
