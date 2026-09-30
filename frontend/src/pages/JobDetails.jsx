@@ -70,6 +70,19 @@ const JobDetails = () => {
   );
   const companyName = job.companyName || job.employer?.company?.name || job.employer?.name || "Company";
   const salary = job.salaryMin || job.salaryMax ? `${job.currency || "USD"} ${Number(job.salaryMin || 0).toLocaleString()}${job.salaryMax ? ` – ${Number(job.salaryMax).toLocaleString()}` : ""}` : "Salary available on request";
+  const requirements = Array.isArray(job.requirements) ? job.requirements : [job.requirements];
+  const requirementItems = requirements.flatMap((item) => {
+    if (typeof item !== "string") return [];
+
+    try {
+      const parsed = JSON.parse(item);
+      if (Array.isArray(parsed)) return parsed;
+    } catch {
+      // Existing plain-text values are displayed as entered.
+    }
+
+    return item.split(/\r?\n/);
+  }).map((item) => item.trim()).filter(Boolean);
 
   return (
     <div className="container-page py-14">
@@ -158,11 +171,11 @@ const JobDetails = () => {
             <GulfSupport job={job} />
           </div>
 
-          {job.requirements?.length > 0 && (
+          {requirementItems.length > 0 && (
             <div className="panel p-6 sm:p-7">
               <h2 className="font-display text-2xl font-semibold text-slate-900">Requirements</h2>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-slate-600">
-                {job.requirements.map((r, i) => <li key={i}>{r}</li>)}
+                {requirementItems.map((requirement, index) => <li key={index}>{requirement}</li>)}
               </ul>
             </div>
           )}

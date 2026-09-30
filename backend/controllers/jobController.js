@@ -57,6 +57,20 @@ const handleCompanyLogo = async (req) => {
   }
 };
 
+const normalizeRequirements = (requirements) => {
+  if (Array.isArray(requirements)) return requirements;
+  if (typeof requirements !== "string") return requirements;
+
+  try {
+    const parsed = JSON.parse(requirements);
+    if (Array.isArray(parsed)) return parsed;
+  } catch {
+    // Plain text requirements are treated as one requirement per line.
+  }
+
+  return requirements.split(/\r?\n/).map((item) => item.trim()).filter(Boolean);
+};
+
 // @desc  Create a job posting (employer only)
 // @route POST /api/jobs
 export const createJob = async (req, res, next) => {
@@ -77,7 +91,7 @@ export const createJob = async (req, res, next) => {
     const companyLogo = await handleCompanyLogo(req);
 
     const jobPayload = {
-      title, description, requirements, location, jobType, category,
+      title, description, requirements: normalizeRequirements(requirements), location, jobType, category,
       experienceLevel, salaryMin, salaryMax, salaryCurrency,
       status: status || "published",
       applicationDeadline,
